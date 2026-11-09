@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f0e8" />
+    <title>观象 · 周易解卦</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="观象首页">
+          <span class="brand-mark" aria-hidden="true">☷</span>
+          <span><strong>观象</strong><small>周易解卦</small></span>
+        </a>
+        <div class="topbar-meta">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>规则引擎 · 本地知识库</span>
+        </div>
+      </header>
+
+      <main id="top" class="main-content">
+        <section class="intro-grid">
+          <div>
+            <p class="eyebrow">YI · OBSERVE THE MOMENT</p>
+            <h1>把当下的困惑，<br /><em>放进一卦里看。</em></h1>
+            <p class="intro-copy">以六爻起卦，结合 64 卦结构化知识与动爻变化，给你一份清晰、克制、可执行的参考。</p>
+          </div>
+          <aside class="principle-note">
+            <span class="note-index">01</span>
+            <p>卦不是答案，<br />是看清局势的另一种语言。</p>
+            <span class="note-seal">觀</span>
+          </aside>
+        </section>
+
+        <nav class="mode-tabs" aria-label="工作区模式">
+          <button class="mode-tab is-active" data-mode="cast" type="button">起一卦 <span>✦</span></button>
+          <button class="mode-tab" data-mode="lookup" type="button">查卦典 <span>64</span></button>
+        </nav>
+
+        <section id="cast-panel" class="workspace-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="section-kicker">START HERE</span>
+              <h2>先把问题说清楚</h2>
+            </div>
+            <span class="step-count">STEP 1 / 3</span>
+          </div>
+
+          <div class="question-layout">
+            <div class="question-editor">
+              <label for="question">你想问什么？</label>
+              <textarea id="question" rows="3" maxlength="120" placeholder="例如：接下来三个月，我该不该接受这份新工作？"></textarea>
+              <div class="field-footer"><span>建议写成一个具体问题</span><span id="question-count">0 / 120</span></div>
+            </div>
+            <div class="category-editor">
+              <label for="category">问题类型</label>
+              <select id="category">
+                <option value="work">事业 / 学业</option>
+                <option value="relationship">关系 / 感情</option>
+                <option value="decision">选择 / 决策</option>
+                <option value="wealth">财务 / 投资</option>
+                <option value="health">身心 / 节奏</option>
+                <option value="general">其他 / 综合</option>
+              </select>
+              <p class="helper-text">分类只影响解读角度，不改变卦象。</p>
+            </div>
+          </div>
+
+          <div class="casting-methods">
+            <div class="subheading-row">
+              <div><span class="section-kicker">HOW TO CAST</span><h3>选择起卦方式</h3></div>
+              <button id="random-question" class="text-button" type="button">换个示例问题 ↗</button>
+            </div>
+            <div class="method-grid">
+              <label class="method-card is-selected">
+                <input type="radio" name="casting-method" value="coins" checked />
+                <span class="method-icon">☷</span>
+                <span class="method-text"><strong>三枚铜钱</strong><small>每一爻投掷三次，保留变化</small></span>
+                <span class="radio-mark" aria-hidden="true"></span>
+              </label>
+              <label class="method-card">
+                <input type="radio" name="casting-method" value="quick" />
+                <span class="method-icon">↯</span>
+                <span class="method-text"><strong>快速起卦</strong><small>由随机数直接生成六爻</small></span>
+                <span class="radio-mark" aria-hidden="true"></span>
+              </label>
+              <label class="method-card">
+                <input type="radio" name="casting-method" value="manual" />
+                <span class="method-icon">☰</span>
+                <span class="method-text"><strong>手动排爻</strong><small>已有结果时，逐爻输入</small></span>
+                <span class="radio-mark" aria-hidden="true"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="lines-section">
+            <div class="subheading-row">
+              <div><span class="section-kicker">SIX LINES</span><h3>六爻排布</h3></div>
+              <span id="line-status" class="line-status">等待起卦</span>
+            </div>
+            <div id="lines-board" class="lines-board" aria-label="六爻排布"></div>
+            <div id="coin-tray" class="coin-tray" hidden>
+              <span class="tray-label">铜钱记录</span>
+              <div id="coin-results" class="coin-results"></div>
+            </div>
+            <button id="cast-button" class="primary-button" type="button"><span aria-hidden="true">✦</span> 开始起卦</button>
+          </div>
+        </section>
+
+        <section id="result-section" class="result-section" hidden>
+          <div class="result-heading">
+            <div><span class="section-kicker">YOUR READING</span><h2>这一卦，先看见什么？</h2></div>
+            <span id="result-time" class="result-time"></span>
+          </div>
+          <div class="reading-layout">
+            <div class="hexagram-card">
+              <div class="hex-card-top"><span id="result-number">第〇卦</span><span id="result-changing" class="changing-badge">本卦</span></div>
+              <div id="result-symbol" class="hex-symbol" aria-label="卦象"></div>
+              <h3 id="result-name">—</h3>
+              <p id="result-pinyin" class="result-pinyin">—</p>
+              <div class="trigram-pair"><span id="result-upper">上卦</span><i> / </i><span id="result-lower">下卦</span></div>
+            </div>
+            <div class="reading-copy">
+              <div class="reading-lead"><span class="quote-mark">“</span><p id="result-summary">—</p></div>
+              <div class="reading-columns">
+                <article><span class="mini-label">卦辞 · THE JUDGEMENT</span><p id="result-judgment">—</p></article>
+                <article><span class="mini-label">象曰 · THE IMAGE</span><p id="result-image">—</p></article>
+              </div>
+              <div class="action-strip"><span class="action-label">给你的行动提示</span><p id="result-action">—</p></div>
+            </div>
+          </div>
+
+          <div id="changing-panel" class="changing-panel" hidden>
+            <div class="subheading-row"><div><span class="section-kicker">MOVING LINES</span><h3>动爻提示</h3></div><span id="changing-count" class="line-status"></span></div>
+            <div id="changing-lines" class="changing-lines"></div>
+            <div id="changed-hexagram" class="changed-hexagram"></div>
+          </div>
+
+          <div class="result-footer">
+            <p>解读来自经典卦义与规则化映射，仅供自我观察与决策参考。</p>
+            <div class="result-actions"><button id="qwen-button" class="ai-button" type="button"><span aria-hidden="true">✧</span> 本地 Qwen 增强</button><button id="copy-result" class="secondary-button" type="button">复制解读</button><button id="new-reading" class="primary-button" type="button"><span aria-hidden="true">↻</span> 再起一卦</button></div>
+          </div>
+          <div id="ai-panel" class="ai-panel" hidden>
+            <div class="ai-panel-heading"><div><span class="section-kicker">LOCAL MODEL</span><h3>Qwen 辅助解读</h3></div><span id="ai-status" class="line-status">等待调用</span></div>
+            <p id="ai-output" class="ai-output"></p>
+            <p class="ai-note">卦象计算来自本地规则引擎；Qwen 只负责基于卦象与问题组织语言。</p>
+          </div>
+        </section>
+
+        <section id="lookup-panel" class="lookup-panel" hidden>
+          <div class="panel-heading">
+            <div><span class="section-kicker">THE 64 HEXAGRAMS</span><h2>查卦典</h2></div>
+            <span class="step-count">KING WEN SEQUENCE</span>
+          </div>
+          <div class="lookup-toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input id="hex-search" type="search" placeholder="搜索卦名、拼音或关键词" /></label><select id="lookup-filter" aria-label="筛选卦象"><option value="all">全部卦象</option><option value="early">前十六卦</option><option value="middle">十七至四十八卦</option><option value="late">后十六卦</option></select></div>
+          <div id="hex-grid" class="hex-grid"></div>
+          <div id="lookup-detail" class="lookup-detail" hidden></div>
+        </section>
+
+        <section class="history-section">
+          <div class="subheading-row"><div><span class="section-kicker">RECENT READINGS</span><h3>最近起卦</h3></div><button id="clear-history" class="text-button" type="button">清空记录</button></div>
+          <div id="history-list" class="history-list"><p class="empty-history">还没有记录。每一次提问，都会留下一个可回看的切面。</p></div>
+        </section>
+      </main>
+
+      <footer class="footer"><span>觀象 / GUAN XIANG</span><span>古典智慧 · 现代自省</span></footer>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="reading-state.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
